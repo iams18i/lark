@@ -6,7 +6,9 @@ class ExampleCommand extends Command {
 
   async handle() {
     // Command logic here
-    await new ExampleJob().dispatchNow()
+    // await new ExampleJob().dispatchNow('sync')
+
+    await new ExampleJob().dispatch('async')
 
     return true
   }
