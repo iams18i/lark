@@ -1,6 +1,6 @@
 {
   "name": "@s18i/create-lark",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Scaffold a new Lark project",
   "type": "module",
   "bin": {
