@@ -26,8 +26,9 @@ class MyJob extends Job {
   // Optional: Override default retry attempts
   attempts = 3
 
-  async handle(): Promise<boolean> {
+  async handle<TData = any>(payload?: TData): Promise<boolean> {
     // Your job logic here
+    // payload contains the data passed when dispatching the job
     return true
   }
 }
@@ -41,13 +42,19 @@ Job.register(MyJob)
 // Dispatch to queue
 await new MyJob().dispatch()
 
+// Dispatch with payload
+await new MyJob().dispatch({ userId: 123, action: 'process' })
+
 // Execute immediately
 await new MyJob().dispatchNow()
+
+// Execute immediately with payload
+await new MyJob().dispatchNow({ userId: 123 })
 
 // Dispatch with delay (in milliseconds)
 const job = new MyJob()
 job.delay = 5000 // 5 seconds
-await job.dispatch()
+await job.dispatch({ data: 'delayed' })
 ```
 
 ### Queue Configuration
@@ -82,10 +89,10 @@ abstract class Job {
   delay: number = 0
   attempts: number = 5
 
-  abstract handle(): Promise<boolean> | boolean
+  abstract handle<TData = any>(payload?: TData): Promise<boolean> | boolean
 
-  dispatch(...args: any[]): Promise<boolean>
-  dispatchNow(...args: any[]): Promise<boolean>
+  dispatch<TData = any>(payload?: TData): Promise<boolean>
+  dispatchNow<TData = any>(payload?: TData): Promise<boolean>
 
   info(message: string, badge?: boolean, args?: any[]): void
   success(message: string, badge?: boolean): void
@@ -138,9 +145,10 @@ Jobs should handle their own errors appropriately:
 
 ```typescript
 class MyJob extends Job {
-  async handle(): Promise<boolean> {
+  async handle<TData = any>(payload?: TData): Promise<boolean> {
     try {
       // Job logic
+      // Access payload data here
       return true
     } catch (error) {
       this.error(`Job failed: ${error.message}`)

@@ -1,6 +1,6 @@
-import { Job } from '../Job'
+import { Job } from '../src/Job'
 import { Config } from '@s18i/lark'
-import * as indexModule from '../index'
+import * as indexModule from '../src/index'
 import consola from 'consola'
 import { describe, expect, it, mock, beforeEach } from 'bun:test'
 
@@ -68,12 +68,13 @@ describe('Job', () => {
 
   describe('Job Dispatch', () => {
     it('should dispatch job to queue', async () => {
-      const result = await job.dispatch('arg1', 'arg2')
+      const payload = { userId: 123, action: 'test' }
+      const result = await job.dispatch(payload)
 
       expect(mockConfigureQueue).toHaveBeenCalledWith('test-queue')
       expect(mockQueue.add).toHaveBeenCalledWith({
         job: 'TestJob',
-        payload: ['arg1', 'arg2'],
+        payload,
       })
       expect(mockQueue.close).toHaveBeenCalled()
       expect(result).toBe(true)
@@ -81,6 +82,12 @@ describe('Job', () => {
 
     it('should dispatch job synchronously', async () => {
       const result = await job.dispatchNow()
+      expect(result).toBe(true)
+    })
+
+    it('should dispatch job synchronously with payload', async () => {
+      const payload = { data: 'test' }
+      const result = await job.dispatchNow(payload)
       expect(result).toBe(true)
     })
   })

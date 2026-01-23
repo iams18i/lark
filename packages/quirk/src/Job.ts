@@ -15,10 +15,10 @@ export abstract class Job {
     // Constructor remains empty, allowing subclasses to define their own initialization if needed
   }
 
-  abstract handle<TData = any>(payload?: TData): Promise<boolean> | boolean
+  abstract handle(payload?: any): Promise<boolean> | boolean
 
   // Main execution method for the command, must be implemented by subclasses
-  async dispatch<TData = any>(payload?: TData): Promise<boolean> {
+  async dispatch(payload?: any): Promise<boolean> {
     this.queue = configureQueue(this.queueName)
     this.info('Job added to queue')
 
@@ -31,7 +31,7 @@ export abstract class Job {
 
     return true
   }
-  async dispatchNow<TData = any>(payload?: TData): Promise<boolean> {
+  async dispatchNow(payload?: any): Promise<boolean> {
     this.info('Dispatching job synchronously')
     return this.handle(payload)
   }

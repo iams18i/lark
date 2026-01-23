@@ -1,11 +1,14 @@
 import { Job } from '@s18i/quirk'
 
-class ExampleJob extends Job {
-  async handle<TData = string>(payload: TData): Promise<boolean> {
+interface TestInter {
+  tesd: string
+}
 
+class ExampleJob extends Job {
+  async handle(payload: TestInter): Promise<boolean> {
     // console.log('🙈 --> payload', payload)
-    throw new Error(payload as string);
-    
+    throw payload
+
     // Implement your job handling logic here
     return true
   }
