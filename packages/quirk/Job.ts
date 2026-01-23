@@ -18,13 +18,13 @@ export abstract class Job {
   abstract handle<TData = any>(payload?: TData): Promise<boolean> | boolean
 
   // Main execution method for the command, must be implemented by subclasses
-  async dispatch(...args: any[]): Promise<boolean> {
+  async dispatch<TData = any>(payload?: TData): Promise<boolean> {
     this.queue = configureQueue(this.queueName)
     this.info('Job added to queue')
 
     await this.queue.add({
       job: this.constructor.name,
-      payload: args,
+      payload,
     })
 
     this.queue.close()
