@@ -1,6 +1,6 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
+import { themes as prismThemes } from 'prism-react-renderer'
+import type { Config } from '@docusaurus/types'
+import type * as Preset from '@docusaurus/preset-classic'
 
 const config: Config = {
   title: 'Lark',
@@ -24,8 +24,8 @@ const config: Config = {
 
   markdown: {
     parseFrontMatter: async (params) => {
-      const result = await params.defaultParseFrontMatter(params);
-      return result;
+      const result = await params.defaultParseFrontMatter(params)
+      return result
     },
   },
 
@@ -70,7 +70,8 @@ const config: Config = {
         '@context': 'https://schema.org',
         '@type': 'SoftwareApplication',
         name: 'Lark',
-        description: 'Laravel-inspired CLI and Job Processing framework for TypeScript. Build command-line applications with background job queues powered by Bull and Redis.',
+        description:
+          'Laravel-inspired CLI and Job Processing framework for TypeScript. Build command-line applications with background job queues powered by Bull and Redis.',
         applicationCategory: 'DeveloperApplication',
         operatingSystem: 'Cross-platform',
         offers: {
@@ -110,11 +111,11 @@ const config: Config = {
           ignorePatterns: ['/tags/**'],
           filename: 'sitemap.xml',
         },
-        // SEO: Google Tag Manager (uncomment and add ID when ready)
-        // gtag: {
-        //   trackingID: 'G-XXXXXXXXXX',
-        //   anonymizeIP: true,
-        // },
+        // SEO: Google Analytics
+        gtag: {
+          trackingID: 'G-VVCF87BZ6R',
+          anonymizeIP: true,
+        },
       } satisfies Preset.Options,
     ],
   ],
@@ -122,16 +123,18 @@ const config: Config = {
   themeConfig: {
     // SEO: Social card image for link previews
     image: 'img/lark-social-card.jpg',
-    
+
     // SEO: Meta description
     metadata: [
       {
         name: 'description',
-        content: 'Lark is a Laravel-inspired CLI and job processing framework for TypeScript. Build powerful command-line applications with background job queues powered by Bull and Redis.',
+        content:
+          'Lark is a Laravel-inspired CLI and job processing framework for TypeScript. Build powerful command-line applications with background job queues powered by Bull and Redis.',
       },
       {
         name: 'keywords',
-        content: 'typescript, cli, command-line, jobs, queues, bull, redis, laravel, artisan, background-jobs, task-queue, nodejs, bun',
+        content:
+          'typescript, cli, command-line, jobs, queues, bull, redis, laravel, artisan, background-jobs, task-queue, nodejs, bun',
       },
       // SEO: Open Graph
       {
@@ -153,11 +156,13 @@ const config: Config = {
       },
       {
         name: 'twitter:title',
-        content: 'Lark - Laravel-inspired CLI and Job Processing for TypeScript',
+        content:
+          'Lark - Laravel-inspired CLI and Job Processing for TypeScript',
       },
       {
         name: 'twitter:description',
-        content: 'Build powerful CLI applications with background job queues. Inspired by Laravel Artisan.',
+        content:
+          'Build powerful CLI applications with background job queues. Inspired by Laravel Artisan.',
       },
       // SEO: Additional meta
       {
@@ -178,7 +183,7 @@ const config: Config = {
       defaultMode: 'dark',
       respectPrefersColorScheme: true,
     },
-    
+
     // SEO: Algolia search (uncomment when configured)
     // algolia: {
     //   appId: 'YOUR_APP_ID',
@@ -269,6 +274,6 @@ const config: Config = {
       additionalLanguages: ['bash', 'json', 'typescript'],
     },
   } satisfies Preset.ThemeConfig,
-};
+}
 
-export default config;
+export default config
