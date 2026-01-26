@@ -1,6 +1,6 @@
-# Quirk
+# Lark Jobs
 
-Quirk is a robust job processing system built on top of Bull, providing a simple and powerful way to handle background tasks in your applications.
+Lark Jobs is a robust job processing system built on top of Bull, providing a simple and powerful way to handle background tasks in your applications.
 
 ## Features
 
@@ -17,7 +17,7 @@ Quirk is a robust job processing system built on top of Bull, providing a simple
 ### Basic Job Definition
 
 ```typescript
-import { Job } from '@s18i/quirk'
+import { Job } from '@s18i/lark-jobs'
 
 class MyJob extends Job {
   // Optional: Override default queue name
@@ -124,7 +124,7 @@ interface QueueOptions {
 The queue worker processes jobs in the background:
 
 ```typescript
-import { initQueues } from '@s18i/quirk'
+import { initQueues } from '@s18i/lark-jobs'
 
 // Initialize queues and start processing
 initQueues()
@@ -163,7 +163,7 @@ class MyJob extends Job {
 ### Installation
 
 ```bash
-bun add @s18i/quirk
+bun add @s18i/lark-jobs
 ```
 
 ### Building

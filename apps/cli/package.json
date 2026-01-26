@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "bun run index.ts",
-    "quirk": "bun run quirk.ts",
+    "lark-jobs": "bun run jobs.ts",
     "build": "tsc",
     "dev": "tsc -w",
     "test": "jest",

@@ -1,4 +1,4 @@
-import { Job } from '@s18i/quirk'
+import { Job } from '@s18i/lark-jobs'
 
 interface TestInter {
   tesd: string

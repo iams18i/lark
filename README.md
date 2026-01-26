@@ -32,7 +32,7 @@ That's it! You can now start creating commands and jobs.
 │       └── jobs/      # Job definitions
 ├── packages/
 │   ├── lark/         # Core framework
-│   └── quirk/        # Job processing system
+│   └── lark-jobs/        # Job processing system
 └── docker/           # Docker configuration
 ```
 
@@ -180,7 +180,7 @@ Jobs are background tasks that can be processed asynchronously. They are located
 ### Basic Job Structure
 
 ```typescript
-import { Job } from '@s18i/quirk'
+import { Job } from '@s18i/lark-jobs'
 
 class MyJob extends Job {
   // Optional: Override default queue name

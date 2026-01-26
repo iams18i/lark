@@ -1,5 +1,5 @@
 {
-  "name": "@s18i/quirk",
+  "name": "@s18i/lark-jobs",
   "version": "0.1.4",
   "description": "A globally executable package",
   "main": "./src/index.ts",

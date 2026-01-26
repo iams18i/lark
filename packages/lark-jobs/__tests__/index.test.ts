@@ -1,8 +1,7 @@
 import { describe, it, expect } from '@jest/globals'
 
-describe('CLI App', () => {
+describe('Lark Jobs Package', () => {
   it('should be defined', () => {
     expect(true).toBeDefined()
   })
 })
-

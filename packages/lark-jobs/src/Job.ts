@@ -32,7 +32,9 @@ export abstract class Job {
     return true
   }
   async dispatchNow(payload?: any): Promise<boolean> {
-    this.info('Dispatching job synchronously')
+    if (Config.data.jobs?.options?.debug === true) {
+      this.info('Dispatching job synchronously')
+    }
     return this.handle(payload)
   }
 
