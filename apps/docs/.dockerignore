@@ -1,0 +1,9 @@
+node_modules
+build
+.docusaurus
+.git
+.gitignore
+*.md
+!README.md
+Dockerfile
+.dockerignore
