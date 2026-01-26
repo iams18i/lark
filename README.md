@@ -1,14 +1,116 @@
-# Commander
+# Lark
 
-A powerful CLI and job processing framework built with TypeScript. Commander provides a robust foundation for building command-line applications with built-in support for background job processing, configuration management, and extensible command system.
+**A Laravel-inspired CLI and job processing framework for TypeScript.**
+
+Lark brings the elegance and developer experience of Laravel's Artisan commands and queue system to the TypeScript/Node.js ecosystem.
+
+📚 **[View Full Documentation →](https://lark.s18i.io)**
 
 ## Quick Start
 
-```bash
-# Clone the repository
-git clone https://github.com/iams18i/lark.git
-cd lark
+Create a new Lark project in seconds:
 
+```bash
+npm create @s18i/lark@latest my-project
+```
+
+Or install in an existing project:
+
+```bash
+bun add @s18i/lark @s18i/lark-jobs
+```
+
+## Features
+
+- **Command System** — Class-based commands with automatic registration
+- **Job Queues** — Redis-backed job processing with Bull
+- **Delayed Jobs** — Schedule jobs to run after a delay
+- **Retry Logic** — Automatic retries with configurable attempts
+- **Multiple Queues** — Organize jobs into different queues
+- **Built-in Logging** — Consistent, beautiful console output
+- **TypeScript First** — Full type safety throughout
+
+## Packages
+
+- **[@s18i/lark](https://www.npmjs.com/package/@s18i/lark)** — Core CLI framework
+- **[@s18i/lark-jobs](https://www.npmjs.com/package/@s18i/lark-jobs)** — Job processing system
+- **[create-lark](https://www.npmjs.com/package/create-@s18i/lark)** — Project scaffolding tool
+
+## Basic Usage
+
+### Creating a Command
+
+```typescript
+import { Command } from '@s18i/lark'
+
+class GreetCommand extends Command {
+  readonly key = 'greet'
+  description = 'Say hello'
+
+  async handle() {
+    this.success('Hello from Lark!')
+    return true
+  }
+}
+
+Command.register(GreetCommand)
+```
+
+### Creating a Job
+
+```typescript
+import { Job } from '@s18i/lark-jobs'
+
+class SendEmailJob extends Job {
+  async handle(payload: { to: string; subject: string }) {
+    this.info(`Sending email to ${payload.to}`)
+    // Your job logic here
+    return true
+  }
+}
+
+Job.register(SendEmailJob)
+
+// Dispatch the job
+await new SendEmailJob().dispatch({ 
+  to: 'user@example.com', 
+  subject: 'Welcome!' 
+})
+```
+
+## Laravel Inspiration
+
+If you're coming from Laravel, you'll recognize these patterns:
+
+| Laravel | Lark |
+|---------|------|
+| `php artisan make:command` | `bun run lark command:add` |
+| `Artisan::command()` | `Command.register()` |
+| `dispatch(new SendEmailJob())` | `new SendEmailJob().dispatch()` |
+| `php artisan queue:work` | `bun run lark-jobs` |
+
+## Requirements
+
+- **Node.js** 18+ or **Bun** 1.0+
+- **Redis** (for job processing)
+- **TypeScript** 5.0+
+
+## Documentation
+
+For detailed documentation, guides, and API reference, visit:
+
+**👉 [https://lark.s18i.io](https://lark.s18i.io)**
+
+The documentation includes:
+- Complete installation guide
+- Command creation and configuration
+- Job processing and queue management
+- Best practices and examples
+- API reference
+
+## Development
+
+```bash
 # Install dependencies
 bun install
 
@@ -17,250 +119,17 @@ docker-compose up -d
 
 # Run the CLI
 bun run lark
+
+# Start job worker
+bun run lark-jobs
 ```
 
-That's it! You can now start creating commands and jobs.
+## License
 
-## Project Structure
+ISC
 
-```
-.
-├── apps/
-│   └── cli/           # CLI application
-│       ├── commands/  # CLI commands
-│       ├── config/    # Configuration files
-│       └── jobs/      # Job definitions
-├── packages/
-│   ├── lark/         # Core framework
-│   └── lark-jobs/        # Job processing system
-└── docker/           # Docker configuration
-```
+## Links
 
-## Configuration System
-
-The project uses a multi-layered configuration system:
-
-### 1. Project Configuration (`lark.config.js`)
-
-The main configuration file that defines the project structure and settings:
-
-```javascript
-export default {
-  commands: './commands',
-  jobs: {
-    queues: ['default'],
-    dir: './jobs',
-    options: {
-      removeOnComplete: true,
-      attempts: 5,
-    },
-  },
-  redis: {
-    port: 6379,
-    host: '127.0.0.1',
-  },
-}
-```
-
-### 2. Application Configuration (`apps/cli/config/`)
-
-The CLI application uses [nodeconfig](https://github.com/node-config/node-config) for environment-specific configuration:
-
-```
-apps/cli/config/
-├── default.json      # Default configuration
-├── development.json  # Development environment overrides
-├── production.json   # Production environment overrides
-├── test.json        # Test environment overrides
-└── local.json       # Local development overrides (git-ignored)
-```
-
-Configuration files are loaded in the following order (later files override earlier ones):
-
-1. `default.json` - Base configuration
-2. `{NODE_ENV}.json` - Environment-specific configuration
-3. `local.json` - Local development overrides (not committed to git)
-
-For more details about configuration loading, file formats, and environment variables, see the [nodeconfig documentation](https://github.com/node-config/node-config/wiki/Configuration-Files).
-
-To use configuration in your commands or jobs:
-
-```typescript
-import config from 'config'
-
-// Access configuration values
-const apiKey = config.get('api.key')
-const timeout = config.get('timeout', 5000) // with default value
-```
-
-#### Local Configuration
-
-The `local.json` file is used for local development settings and is git-ignored. This allows developers to:
-
-- Override sensitive values (API keys, passwords)
-- Set local-specific settings
-- Maintain different configurations across team members
-
-Example `local.json`:
-
-```json
-{
-  "api": {
-    "key": "your-local-api-key",
-    "endpoint": "http://localhost:3000"
-  },
-  "redis": {
-    "host": "localhost",
-    "port": 6379
-  }
-}
-```
-
-### 3. Environment Variables
-
-Environment-specific settings can be overridden using `.env` files:
-
-```bash
-# .env
-REDIS_HOST=localhost
-REDIS_PORT=6379
-API_KEY=your-api-key
-```
-
-## Creating New Commands
-
-Commands are the building blocks of the CLI application. They are located in the `apps/cli/commands` directory.
-
-### Using the Command Generator
-
-The easiest way to create a new command is to use the built-in command generator:
-
-```bash
-bun run lark command:add
-```
-
-This will prompt you for:
-
-1. Command name (e.g., "process-files")
-2. Command key (optional, defaults to slugified command name)
-
-### Manual Command Creation
-
-You can also create commands manually by creating a new file in `apps/cli/commands/`:
-
-```typescript
-import { Command } from '@s18i/lark'
-
-class MyCommand extends Command {
-  readonly key = 'my-command' // This will be the command name in CLI
-  description = 'Description of what my command does'
-
-  async handle() {
-    // Your command logic here
-    return true
-  }
-}
-
-Command.register(MyCommand)
-
-export { MyCommand }
-```
-
-### Command Features
-
-- **Key**: Unique identifier for the command (used in CLI)
-- **Description**: Optional description of the command
-- **Handle Method**: Main execution logic
-- **Built-in Logging**: Use `this.info()`, `this.error()`, and `this.success()` for logging
-
-## Creating New Jobs
-
-Jobs are background tasks that can be processed asynchronously. They are located in the `apps/cli/jobs` directory.
-
-### Basic Job Structure
-
-```typescript
-import { Job } from '@s18i/lark-jobs'
-
-class MyJob extends Job {
-  // Optional: Override default queue name
-  queueName = 'custom-queue'
-
-  // Optional: Override default retry attempts
-  attempts = 3
-
-  async handle(): Promise<boolean> {
-    // Your job logic here
-    return true
-  }
-}
-
-Job.register(MyJob)
-
-export { MyJob }
-```
-
-### Job Features
-
-- **Queue Name**: Specify which queue to use (defaults to 'default')
-- **Retry Attempts**: Number of times to retry failed jobs (defaults to 5)
-- **Delay**: Add delay before job execution (in milliseconds)
-- **Handle Method**: Main job processing logic
-
-### Dispatching Jobs
-
-From within a command or another job:
-
-```typescript
-// Dispatch to queue
-await new MyJob().dispatch()
-
-// Execute immediately
-await new MyJob().dispatchNow()
-```
-
-## Development
-
-1. Install dependencies:
-
-   ```bash
-   bun install
-   ```
-
-2. Start Redis (required for job processing):
-
-   ```bash
-   docker-compose up -d
-   ```
-
-3. Run the CLI:
-   ```bash
-   bun run lark
-   ```
-
-## Available Commands
-
-- `command:add` - Create a new command
-- `init` - Initialize project configuration
-
-## Best Practices
-
-1. **Commands**:
-
-   - Keep commands focused on a single responsibility
-   - Use descriptive names and keys
-   - Handle errors gracefully
-   - Use built-in logging methods
-
-2. **Jobs**:
-
-   - Make jobs idempotent when possible
-   - Use appropriate queue names for different job types
-   - Set reasonable retry attempts
-   - Handle errors and edge cases
-
-3. **General**:
-   - Follow TypeScript best practices
-   - Write clear documentation
-   - Use meaningful variable and function names
-   - Test your commands and jobs thoroughly
+- **Documentation**: [https://lark.s18i.io](https://lark.s18i.io)
+- **GitHub**: [https://github.com/iams18i/lark](https://github.com/iams18i/lark)
+- **npm**: [@s18i/lark](https://www.npmjs.com/package/@s18i/lark) | [@s18i/lark-jobs](https://www.npmjs.com/package/@s18i/lark-jobs)
