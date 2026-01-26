@@ -19,5 +19,5 @@ volumes:
 networks:
   redis-network:
     driver: bridge
-# cd /Users/sebastian/code/commander
-# node /Users/sebastian/code/commander/packages/create-lark/dist/index.js test
+# cd /Users/sebastian/code/lark
+# node /Users/sebastian/code/lark/packages/create-lark/dist/index.js test

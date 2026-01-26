@@ -6,8 +6,8 @@ A powerful CLI and job processing framework built with TypeScript. Commander pro
 
 ```bash
 # Clone the repository
-git clone https://github.com/iams18i/commander.git
-cd commander
+git clone https://github.com/iams18i/lark.git
+cd lark
 
 # Install dependencies
 bun install
