@@ -13,6 +13,14 @@ import consola from 'consola'
 import './commands/InitCommand'
 import './commands/AddCommand'
 
+// Optional: register job:add command if @s18i/lark-jobs is installed
+try {
+  require.resolve('@s18i/lark-jobs')
+  require('@s18i/lark-jobs/src/commands/AddJobCommand')
+} catch {
+  // @s18i/lark-jobs not installed, skip
+}
+
 const program = new CommanderCommand()
 const packageJson = JSON.parse(
   readFileSync(join(__dirname, '..', 'package.json'), 'utf8'),
