@@ -1,6 +1,6 @@
 {
   "name": "@s18i/lark-jobs",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A globally executable package",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
