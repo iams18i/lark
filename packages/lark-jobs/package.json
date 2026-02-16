@@ -14,11 +14,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "bull": "^4.16.1",
+    "consola": "^3.2.3"
+  },
   "devDependencies": {
     "@s18i/lark": "*",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.24",
-    "bull": "^4.16.1",
     "consola": "^3.2.3",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2",
