@@ -20,7 +20,9 @@ export abstract class Job {
   // Main execution method for the command, must be implemented by subclasses
   async dispatch(payload?: any): Promise<boolean> {
     this.queue = configureQueue(this.queueName)
-    this.info('Job added to queue')
+    if (Config.data.jobs?.options?.debug === true) {
+      this.info('Job added to queue')
+    }
 
     await this.queue.add({
       job: this.constructor.name,
