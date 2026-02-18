@@ -78,6 +78,7 @@ export abstract class Job {
 
   delay(seconds: number) {
     this.delayInSeconds = seconds
+
     return this
   }
 
