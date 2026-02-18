@@ -3,12 +3,12 @@ import { Config } from '@s18i/lark'
 import { configureQueue, initQueues, queues } from './index'
 import consola from 'consola'
 import { colorize } from 'consola/utils'
-import type { Queue } from 'bull'
+import type { JobOptions, Queue } from 'bull'
 
 export abstract class Job {
   queueName = 'default'
   queue?: Queue
-  delay = 0
+  delayInSeconds = 0
   attempts = 5
 
   constructor() {
@@ -24,15 +24,19 @@ export abstract class Job {
       this.info('Job added to queue')
     }
 
-    await this.queue.add({
-      job: this.constructor.name,
-      payload,
-    })
+    await this.queue.add(
+      {
+        job: this.constructor.name,
+        payload,
+      },
+      this.getOptions(),
+    )
 
     this.queue.close()
 
     return true
   }
+
   async dispatchNow(payload?: any): Promise<boolean> {
     if (Config.data.jobs?.options?.debug === true) {
       this.info('Dispatching job synchronously')
@@ -42,6 +46,20 @@ export abstract class Job {
 
   static register(job: any) {
     Config.jobs[job.name] = job
+  }
+
+  getOptions() {
+    const options: JobOptions = {}
+
+    if (this.delayInSeconds) {
+      options.delay = this.delayInSeconds * 1000
+    }
+
+    if (this.attempts) {
+      options.attempts = this.attempts
+    }
+
+    return options
   }
 
   // Utility method for logging informational messages
@@ -56,6 +74,11 @@ export abstract class Job {
         message: `${colorize('cyan', this.constructor.name)} ${message}`,
       })
     }
+  }
+
+  delay(seconds: number) {
+    this.delayInSeconds = seconds
+    return this
   }
 
   // Utility method for logging error messages
